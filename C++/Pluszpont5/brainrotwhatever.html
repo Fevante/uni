@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C/C++ Brainrot Worksheet</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Permanent+Marker&family=DM+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0d0d0d;
+    --white: #f5f0e8;
+    --yellow: #FFE135;
+    --red: #FF3B3B;
+    --blue: #2563FF;
+    --green: #00C96B;
+    --purple: #9B5FFF;
+    --orange: #FF7A1A;
+    --pink: #FF4DB8;
+    --gray: #2a2a2a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    padding: 40px 20px;
+  }
+
+  .page {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  /* HEADER */
+  .header {
+    text-align: center;
+    margin-bottom: 48px;
+    position: relative;
+  }
+
+  .header-badge {
+    display: inline-block;
+    background: var(--yellow);
+    color: var(--black);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 3px;
+    padding: 4px 16px;
+    margin-bottom: 12px;
+  }
+
+  .header h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(52px, 10vw, 96px);
+    line-height: 0.9;
+    letter-spacing: -1px;
+  }
+
+  .header h1 .line1 { color: var(--white); display: block; }
+  .header h1 .line2 { color: var(--yellow); display: block; }
+  .header h1 .line3 { 
+    color: transparent; 
+    -webkit-text-stroke: 2px var(--white);
+    display: block; 
+  }
+
+  .header-sub {
+    margin-top: 16px;
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: #888;
+    letter-spacing: 1px;
+  }
+
+  .zigzag {
+    margin: 32px 0;
+    height: 8px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--yellow) 0px, var(--yellow) 20px,
+      var(--red) 20px, var(--red) 40px,
+      var(--blue) 40px, var(--blue) 60px,
+      var(--green) 60px, var(--green) 80px
+    );
+  }
+
+  /* CHARACTER CARDS */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 24px;
+    margin-bottom: 40px;
+  }
+
+  .card {
+    border: 3px solid;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    right: -6px;
+    bottom: -6px;
+    z-index: -1;
+  }
+
+  .card-1 { border-color: var(--blue); background: #0d1a3a; }
+  .card-1::before { background: var(--blue); }
+  .card-2 { border-color: var(--red); background: #3a0d0d; }
+  .card-2::before { background: var(--red); }
+  .card-3 { border-color: var(--yellow); background: #2a2200; }
+  .card-3::before { background: var(--yellow); }
+  .card-4 { border-color: var(--green); background: #002a14; }
+  .card-4::before { background: var(--green); }
+  .card-5 { border-color: var(--purple); background: #1a0d3a; }
+  .card-5::before { background: var(--purple); }
+  .card-6 { border-color: var(--orange); background: #2a1200; }
+  .card-6::before { background: var(--orange); }
+  .card-7 { border-color: var(--pink); background: #2a001a; }
+  .card-7::before { background: var(--pink); }
+  .card-8 { border-color: #666; background: #111; }
+  .card-8::before { background: #444; }
+
+  .card-header {
+    padding: 16px 20px 12px;
+    border-bottom: 2px solid currentColor;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .card-1 .card-header { color: var(--blue); }
+  .card-2 .card-header { color: var(--red); }
+  .card-3 .card-header { color: var(--yellow); }
+  .card-4 .card-header { color: var(--green); }
+  .card-5 .card-header { color: var(--purple); }
+  .card-6 .card-header { color: var(--orange); }
+  .card-7 .card-header { color: var(--pink); }
+  .card-8 .card-header { color: #888; }
+
+  .card-emoji {
+    font-size: 36px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .card-title-block {}
+
+  .card-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    line-height: 1;
+    color: var(--white);
+    letter-spacing: 0.5px;
+  }
+
+  .card-concept {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    margin-top: 2px;
+    opacity: 0.85;
+  }
+
+  .card-body {
+    padding: 16px 20px;
+  }
+
+  .card-desc {
+    font-size: 14px;
+    line-height: 1.65;
+    color: #ccc;
+    margin-bottom: 14px;
+  }
+
+  .card-desc strong {
+    color: var(--white);
+    font-weight: 700;
+  }
+
+  .card-quote {
+    font-family: 'Permanent Marker', cursive;
+    font-size: 13.5px;
+    line-height: 1.5;
+    padding: 10px 14px;
+    border-left: 3px solid currentColor;
+    background: rgba(255,255,255,0.04);
+    color: var(--white);
+    margin-bottom: 14px;
+  }
+
+  .card-1 .card-quote { border-color: var(--blue); }
+  .card-2 .card-quote { border-color: var(--red); }
+  .card-3 .card-quote { border-color: var(--yellow); }
+  .card-4 .card-quote { border-color: var(--green); }
+  .card-5 .card-quote { border-color: var(--purple); }
+  .card-6 .card-quote { border-color: var(--orange); }
+  .card-7 .card-quote { border-color: var(--pink); }
+  .card-8 .card-quote { border-color: #666; }
+
+  .card-code {
+    background: #000;
+    border: 1px solid #333;
+    padding: 12px 14px;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    line-height: 1.8;
+    overflow-x: auto;
+    margin-bottom: 14px;
+  }
+
+  .c-kw { color: #569CD6; }
+  .c-type { color: #4EC9B0; }
+  .c-val { color: #CE9178; }
+  .c-num { color: #B5CEA8; }
+  .c-comment { color: #6A9955; }
+  .c-fn { color: #DCDCAA; }
+  .c-op { color: var(--yellow); }
+  .c-str { color: #CE9178; }
+
+  .card-danger {
+    font-size: 12px;
+    font-family: 'Space Mono', monospace;
+    padding: 8px 12px;
+    border: 1px dashed;
+    color: #ccc;
+  }
+
+  .card-1 .card-danger { border-color: var(--blue); background: rgba(37,99,255,0.08); }
+  .card-2 .card-danger { border-color: var(--red); background: rgba(255,59,59,0.08); }
+  .card-3 .card-danger { border-color: var(--yellow); background: rgba(255,225,53,0.08); }
+  .card-4 .card-danger { border-color: var(--green); background: rgba(0,201,107,0.08); }
+  .card-5 .card-danger { border-color: var(--purple); background: rgba(155,95,255,0.08); }
+  .card-6 .card-danger { border-color: var(--orange); background: rgba(255,122,26,0.08); }
+  .card-7 .card-danger { border-color: var(--pink); background: rgba(255,77,184,0.08); }
+  .card-8 .card-danger { border-color: #555; background: rgba(100,100,100,0.08); }
+
+  .danger-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    margin-bottom: 3px;
+    opacity: 0.6;
+  }
+
+  /* WORKSHEET SECTION */
+  .worksheet-section {
+    margin-top: 48px;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    color: var(--yellow);
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+  }
+
+  .section-sub {
+    font-size: 13px;
+    color: #666;
+    font-family: 'Space Mono', monospace;
+    margin-bottom: 24px;
+  }
+
+  .exercise {
+    border: 2px solid #333;
+    margin-bottom: 20px;
+    background: #111;
+  }
+
+  .exercise-header {
+    background: #1e1e1e;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 2px solid #333;
+  }
+
+  .exercise-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--yellow);
+    min-width: 32px;
+  }
+
+  .exercise-title {
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--white);
+  }
+
+  .exercise-body {
+    padding: 16px 20px;
+  }
+
+  .exercise-task {
+    font-size: 14px;
+    color: #bbb;
+    margin-bottom: 12px;
+    line-height: 1.6;
+  }
+
+  .exercise-task strong { color: var(--white); }
+
+  .answer-code {
+    background: #000;
+    border: 1px solid #333;
+    padding: 12px 14px;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    line-height: 1.8;
+    margin-bottom: 10px;
+  }
+
+  .blank {
+    display: inline-block;
+    width: 100px;
+    border-bottom: 2px solid var(--yellow);
+    height: 18px;
+    vertical-align: bottom;
+    margin: 0 4px;
+  }
+
+  .blank-sm {
+    display: inline-block;
+    width: 60px;
+    border-bottom: 2px solid var(--yellow);
+    height: 18px;
+    vertical-align: bottom;
+    margin: 0 4px;
+  }
+
+  .match-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  .match-table td, .match-table th {
+    padding: 8px 12px;
+    border: 1px solid #333;
+    vertical-align: top;
+  }
+
+  .match-table th {
+    background: #1e1e1e;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    letter-spacing: 1px;
+    color: var(--yellow);
+  }
+
+  .match-table td:first-child {
+    font-family: 'Space Mono', monospace;
+    color: var(--green);
+    width: 45%;
+  }
+
+  .match-table .answer-col {
+    color: #555;
+    font-style: italic;
+    width: 55%;
+  }
+
+  .match-table .arrow {
+    color: var(--yellow);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    text-align: center;
+    width: 30px;
+    padding: 8px 4px;
+  }
+
+  .answer-line {
+    border-bottom: 2px solid #333;
+    height: 36px;
+    margin: 8px 0;
+    width: 100%;
+  }
+
+  .answer-lines {
+    margin-top: 8px;
+  }
+
+  /* BOSSES */
+  .boss-section {
+    margin-top: 48px;
+    padding: 24px;
+    border: 3px solid var(--red);
+    background: #1a0000;
+    position: relative;
+  }
+
+  .boss-label {
+    position: absolute;
+    top: -14px;
+    left: 20px;
+    background: var(--red);
+    color: var(--black);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    padding: 2px 16px;
+    letter-spacing: 2px;
+  }
+
+  .boss-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 8px;
+  }
+
+  .boss-card {
+    background: #0d0d0d;
+    border: 1px solid var(--red);
+    padding: 14px;
+  }
+
+  .boss-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--red);
+    margin-bottom: 6px;
+  }
+
+  .boss-desc {
+    font-size: 13px;
+    color: #bbb;
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+
+  .boss-code {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    background: #000;
+    padding: 8px;
+    color: var(--red);
+    border: 1px solid #3a0000;
+  }
+
+  /* FOOTER */
+  .footer {
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 2px solid #222;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: #444;
+  }
+
+  .footer .score-box {
+    border: 2px solid #333;
+    padding: 8px 20px;
+    text-align: center;
+  }
+
+  .footer .score-box span {
+    display: block;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--white);
+    margin-top: 2px;
+  }
+
+  /* PRINT */
+  @media print {
+    body { background: white; color: black; padding: 20px; }
+    .card { break-inside: avoid; }
+    .exercise { break-inside: avoid; }
+    .boss-section { break-inside: avoid; }
+    .cards-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* Hover effects */
+  .card { transition: transform 0.15s ease; }
+  .card:hover { transform: translate(-3px, -3px); }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-badge">C / C++ • OKTATÓ ANYAG</div>
+    <h1>
+      <span class="line1">PROGRAMOZÁS</span>
+      <span class="line2">BRAINROT</span>
+      <span class="line3">WORKSHEET</span>
+    </h1>
+    <div class="header-sub">// Tanuld meg a fogalmakat, mielőtt ők tanulnak meg téged //</div>
+  </div>
+
+  <div class="zigzag"></div>
+
+  <!-- CARDS -->
+  <div class="cards-grid">
+
+    <!-- 1. Változó Vlad -->
+    <div class="card card-1">
+      <div class="card-header">
+        <div class="card-emoji">📦</div>
+        <div class="card-title-block">
+          <div class="card-name">Változó Vlad</div>
+          <div class="card-concept" style="color:var(--blue)">VARIABLE &nbsp;·&nbsp; int, char, float...</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <p class="card-desc">
+          Egy doboz, amibe <strong>pontosan egy érték</strong> fér be egyszerre.
+          A doboznak van neve, típusa, és ha új értéket teszel bele, a régi
+          nyomtalanul eltűnik. Vlad folyamatosan identity crisisben van.
+        </p>
+        <div class="card-quote">"Ma 7 vagyok. Holnap talán 'kutya'. Miért ítélsz."</div>
+        <div class="card-code">
+<span class="c-type">int</span> <span class="c-kw">vlad</span> = <span class="c-num">7</span>;         <span class="c-comment">// Vlad = 7</span>
+<span class="c-kw">vlad</span> = <span class="c-num">42</span>;            <span class="c-comment">// Vlad most 42. Viszlát 7.</span>
+
+<span class="c-type">char</span> <span class="c-kw">nev</span>[] = <span class="c-str">"kutya"</span>; <span class="c-comment">// Vlad karaktersorozat</span>
+<span class="c-type">float</span> <span class="c-kw">pi</span> = <span class="c-num">3.14f</span>;    <span class="c-comment">// Vlad tizedestört</span>
+        </div>
+        <div class="card-danger">
+          <div class="danger-label">⚠ CLASSIC TRAP</div>
+          Inicializálatlan Vlad értéke <strong>random szemét</strong>. Ne feltételezd, hogy 0!
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Pointer Pete -->
+    <div class="card card-2">
+      <div class="card-header">
+        <div class="card-emoji">👉</div>
+        <div class="card-title-block">
+          <div class="card-name">Pointer Pete</div>
+          <div class="card-concept" style="color:var(--red)">POINTER &nbsp;·&nbsp; int*, char*, void*</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <p class="card-desc">
+          Pete nem mondja meg <strong>mi ő</strong> — csak megmutatja <strong>hol van a valódi érték</strong>.
+          Van egy memóriacíme, és ha azt követed: ott találod az adatot.
+          Ha Pete érvénytelen helyre mutat → <strong>Segfault Samu megjelenik.</strong>
+        </p>
+        <div class="card-quote">"Én nem vagyok az érték. Én tudom, hol van."</div>
+        <div class="card-code">
+<span class="c-type">int</span> <span class="c-kw">ertek</span> = <span class="c-num">99</span>;
+<span class="c-type">int</span><span class="c-op">*</span> <span class="c-kw">pete</span> = <span class="c-op">&amp;</span><span class="c-kw">ertek</span>; <span class="c-comment">// Pete = cím</span>
+
+<span class="c-fn">printf</span>(<span class="c-str">"%p\n"</span>, pete);   <span class="c-comment">// a cím</span>
+<span class="c-fn">printf</span>(<span class="c-str">"%d\n"</span>, <span class="c-op">*</span>pete); <span class="c-comment">// 99 (dereference)</span>
+<span class="c-op">*</span>pete = <span class="c-num">100</span>;            <span class="c-comment">// ertek most 100</span>
+        </div>
+        <div class="card-danger">
+          <div class="danger-label">⚠ HALÁL</div>
+          <code>int* pete = nullptr;</code> → <code>*pete</code> → <strong>Segfault Samu</strong> jön el.
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Xerox Chad -->
+    <div class="card card-3">
+      <div class="card-header">
+        <div class="card-emoji">🪞</div>
+        <div class="card-title-block">
+          <div class="card-name">Xerox Chad</div>
+          <div class="card-concept" style="color:var(--yellow)">PASS BY VALUE &nbsp;·&nbsp; Érték szerinti átadás</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <p class="card-desc">
+          Amikor egy függvény kap valamit, <strong>másolatot kap</strong>, nem az eredetit.
+          A másolat szenvedhet, változhat, meghalhat — Xerox Chad
+          az eredeti, és <strong>ő mit sem érez.</strong>
+        </p>
+        <div class="card-quote">"Küldtem egy másolatot. Az eredeti én vagyok."</div>
+        <div class="card-code">
+<span class="c-kw">void</span> <span class="c-fn">doNothing</span>(<span class="c-type">int</span> <span class="c-kw">x</span>) {
+    <span class="c-kw">x</span> = <span class="c-num">999</span>; <span class="c-comment">// csak a másolat változik!</span>
+}
+
+<span class="c-type">int</span> <span class="c-kw">chad</span> = <span class="c-num">5</span>;
+<span class="c-fn">doNothing</span>(<span class="c-kw">chad</span>);    <span class="c-comment">// chad még mindig 5</span>
+<span class="c-fn">printf</span>(<span class="c-str">"%d"</span>, <span class="c-kw">chad</span>);  <span class="c-comment">// → 5</span>
+        </div>
+        <div class="card-danger">
+          <div class="danger-label">💡 MEGJEGYEZNI</div>
+          Nagy struktúráknál a másolás lassú. Érdemes lehet pointert vagy referenciát átadni.
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Key Dealer Kevin -->
+    <div class="card card-4">
+      <div class="card-header">
+        <div class="card-emoji">🔑</div>
+        <div class="card-title-block">
+          <div class="card-name">Key Dealer Kevin</div>
+          <div class="card-concept" style="color:var(--green)">PASS BY REFERENCE &nbsp;·&nbsp; int&amp;</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <p class="card-desc">
+          Kevin odaadja a <strong>lakáskulcsait</strong>. Bárki, aki megkapja, beléphet
+          és átrendezheti a lakást. Kevin <strong>hazaér, és minden változás valós.</strong>
+          Nincs másolat. Teljes hozzáférés — vagy teljes káosz.
+        </p>
+        <div class="card-quote">"A kulcs nálad. Az én lakásom."</div>
+        <div class="card-code">
+<span class="c-kw">void</span> <span class="c-fn">megduplaz</span>(<span class="c-type">int</span><span class="c-op">&amp;</span> <span class="c-kw">x</span>) { <span class="c-comment">// C++ ref</span>
+    <span class="c-kw">x</span> = <span class="c-kw">x</span> <span class="c-op">*</span> <span class="c-num">2</span>; <span class="c-comment">// az EREDETI változik</span>
+}
+
+<span class="c-type">int</span> <span class="c-kw">kevin</span> = <span class="c-num">10</span>;
+<span class="c-fn">megduplaz</span>(<span class="c-kw">kevin</span>);
+<span class="c-comment">// kevin most 20</span>
+        </div>
+        <div class="card-danger">
+          <div class="danger-label">⚠ C-BEN NINCS REFERENCIA!</div>
+          C-ben ugyanezt pointerrel éred el: <code>void f(int* x) &#123; *x *= 2; &#125;</code>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. Scope Sensei -->
+    <div class="card card-5">
+      <div class="card-header">
+        <div class="card-emoji">🚧</div>
+        <div class="card-title-block">
+          <div class="card-name">Scope Sensei</div>
+          <div class="card-concept" style="color:var(--purple)">SCOPE / HATÓKÖR &nbsp;·&nbsp; { }</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <p class="card-desc">
+          Sensei <strong>csak a saját blokkjában él</strong>. A <code>{</code> jelzi a születését,
+          a <code>}</code> a halálát. Kívülről hívni őt:
+          <strong>lefordíthatatlan bűn.</strong> Ő tudja ezt. Elfogadta.
+        </p>
+        <div class="card-quote">"A falaimon belül minden az enyém. Kívül? Nem létezem."</div>
+        <div class="card-code">
+{
+    <span class="c-type">int</span> <span class="c-kw">sensei</span> = <span class="c-num">99</span>; <span class="c-comment">// él</span>
+    <span class="c-fn">printf</span>(<span class="c-str">"%d"</span>, <span class="c-kw">sensei</span>); <span class="c-comment">// ✓</span>
+} <span class="c-comment">// sensei meghalt</span>
+
+<span class="c-fn">printf</span>(<span class="c-str">"%d"</span>, <span class="c-kw">sensei</span>);
+<span class="c-comment">// ✗ error: undeclared identifier</span>
+        </div>
+        <div class="card-danger">
+          <div class="danger-label">💡 SCOPE TÍPUSOK</div>
+          Lokális (függvény), Globális (fájl), Block ({ }), Függvény-paraméter
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. Generic Greg -->
+    <div class="card card-6">
+      <div class="card-header">
+        <div class="card-emoji">🫥</div>
+        <div class="card-title-block">
+          <div class="card-name">Generic Greg</div>
+          <div class="card-concept" style="color:var(--orange)">TEMPLATE / SABLON &nbsp;·&nbsp; template&lt;T&gt;</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <p class="card-desc">
+          Greg <strong>bármivé válhat</strong>, de csak akkor dől el mi lesz belőle,
+          amikor ténylegesen használják. Addig ő csak <code>&lt;T&gt;</code> — egy
+          típus nélküli, lebegő egzisztencia a fordítás előtt.
+        </p>
+        <div class="card-quote">"Mondd meg ki legyek, és azzá leszek. De csak egyszer."</div>
+        <div class="card-code">
+<span class="c-kw">template</span>&lt;<span class="c-kw">typename</span> <span class="c-type">T</span>&gt;
+<span class="c-type">T</span> <span class="c-fn">osszeAdd</span>(<span class="c-type">T</span> <span class="c-kw">a</span>, <span class="c-type">T</span> <span class="c-kw">b</span>) {
+    <span class="c-kw">return</span> <span class="c-kw">a</span> + <span class="c-kw">b</span>;
+}
+<span class="c-comment">// Használat:</span>
+<span class="c-fn">osszeAdd</span>&lt;<span class="c-type">int</span>&gt;(<span class="c-num">3</span>, <span class="c-num">4</span>);    <span class="c-comment">// → 7</span>
+<span class="c-fn">osszeAdd</span>&lt;<span class="c-type">float</span>&gt;(<span class="c-num">1.5</span>, <span class="c-num">2.5</span>); <span class="c-comment">// → 4.0</span>
+        </div>
+        <div class="card-danger">
+          <div class="danger-label">💡 C++ ONLY</div>
+          Template csak C++-ban létezik. C-ben ezt makróval vagy void*-gal oldják meg.
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. Recursion Rick -->
+    <div class="card card-7">
+      <div class="card-header">
+        <div class="card-emoji">🌀</div>
+        <div class="card-title-block">
+          <div class="card-name">Recursion Rick</div>
+          <div class="card-concept" style="color:var(--pink)">REKURZIÓ &nbsp;·&nbsp; önhívás + base case</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <p class="card-desc">
+          Rick mindig <strong>saját magát hívja segítségül</strong> a problémájához.
+          Ha van kilépési feltétel (base case): megoldódik.
+          Ha nincs → <strong>Stack Overflow Stan érkezik</strong> és az egész verem összeomlik.
+        </p>
+        <div class="card-quote">"Ha te se tudod, kérdezd meg Ricket. Rick kérdezze meg Ricket."</div>
+        <div class="card-code">
+<span class="c-type">int</span> <span class="c-fn">faktorialis</span>(<span class="c-type">int</span> <span class="c-kw">n</span>) {
+    <span class="c-kw">if</span> (<span class="c-kw">n</span> == <span class="c-num">0</span>) <span class="c-kw">return</span> <span class="c-num">1</span>; <span class="c-comment">// base case!</span>
+    <span class="c-kw">return</span> <span class="c-kw">n</span> * <span class="c-fn">faktorialis</span>(<span class="c-kw">n</span>-<span class="c-num">1</span>);
+}
+<span class="c-comment">// f(3) = 3 * f(2) = 3 * 2 * f(1)</span>
+<span class="c-comment">//      = 3 * 2 * 1 * f(0) = 6</span>
+        </div>
+        <div class="card-danger">
+          <div class="danger-label">⚠ STACK OVERFLOW</div>
+          Base case nélkül Rick végtelen mélységbe zuhan. Stack mérete <strong>véges</strong>.
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. Null Nick -->
+    <div class="card card-8">
+      <div class="card-header">
+        <div class="card-emoji">⚰️</div>
+        <div class="card-title-block">
+          <div class="card-name">Null Nick</div>
+          <div class="card-concept" style="color:#888">NULL / NULLPTR &nbsp;·&nbsp; a nagy semmi</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <p class="card-desc">
+          Nem nulla, nem üres string — <strong>semmi</strong>. Nick sehova sem mutat.
+          Ha hozzányúlsz: <strong>Segfault Samu</strong> jön el személyesen.
+          Ha ellenőrzöd mielőtt dereferenceled: élsz.
+        </p>
+        <div class="card-quote">"Én nem vagyok. Mégis mindenhol jelen vagyok."</div>
+        <div class="card-code">
+<span class="c-type">int</span><span class="c-op">*</span> <span class="c-kw">nick</span> = <span class="c-kw">nullptr</span>;  <span class="c-comment">// C++</span>
+<span class="c-type">int</span><span class="c-op">*</span> <span class="c-kw">nick</span> = <span class="c-kw">NULL</span>;     <span class="c-comment">// C</span>
+
+<span class="c-comment">// Helyes ellenőrzés:</span>
+<span class="c-kw">if</span> (<span class="c-kw">nick</span> != <span class="c-kw">nullptr</span>) {
+    <span class="c-fn">printf</span>(<span class="c-str">"%d"</span>, <span class="c-op">*</span><span class="c-kw">nick</span>); <span class="c-comment">// biztonságos</span>
+}
+        </div>
+        <div class="card-danger">
+          <div class="danger-label">⚠ LEGTÖBB BUG OKA</div>
+          A legtöbb C/C++ crash mögött Null Nick rejtőzik. <strong>Mindig ellenőrizd!</strong>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BOSS CHARACTERS -->
+  <div class="boss-section">
+    <div class="boss-label">⚠ BOSS KARAKTEREK — HA EZEKET LÁTOD, BŐVÍTENI KELL</div>
+    <p style="font-size:13px; color:#888; margin-bottom:16px; font-family:'Space Mono',monospace;">
+      // Ezek nem alapfogalmak — de tudni kell kik ők, hogy elkerüld őket
+    </p>
+    <div class="boss-grid">
+      <div class="boss-card">
+        <div class="boss-name">💀 SEGFAULT SAMU</div>
+        <p class="boss-desc">
+          Akkor jelenik meg, ha érvénytelen memóriacímet ér el a programod.
+          Null Nick dereferencelése, wild pointer, stack overflow — mind az ő munkája.
+          A program azonnal megszűnik. Nem lehet tárgyalni vele.
+        </p>
+        <div class="boss-code">Segmentation fault (core dumped)</div>
+      </div>
+      <div class="boss-card">
+        <div class="boss-name">🌊 STACK OVERFLOW STAN</div>
+        <p class="boss-desc">
+          Recursion Rick hívja elő, ha elfelejt megállni. A call stack
+          véges méretű. Ha betelik, Stan gondoskodik arról, hogy a program
+          emlékezetes véget érjen. Base case nélkül Rick mindig Stant hívja.
+        </p>
+        <div class="boss-code">Stack overflow / Stack smashing detected</div>
+      </div>
+      <div class="boss-card">
+        <div class="boss-name">👻 MEMORY LEAK MIKI</div>
+        <p class="boss-desc">
+          Ha <code>malloc()</code> / <code>new</code> után elfelejtesz
+          <code>free()</code> / <code>delete</code>-et hívni, Miki csendesen
+          ellopja a memóriád. A program fut, de lassul. Napokig nem veszed észre.
+        </p>
+        <div class="boss-code">valgrind: definitely lost: 2,048 bytes</div>
+      </div>
+      <div class="boss-card">
+        <div class="boss-name">🎲 UNDEFINED BEHAVIOR UBUL</div>
+        <p class="boss-desc">
+          A legelborultabb boss. Ha meghívod (pl. signed integer overflow,
+          array out of bounds, inicializálatlan változó olvasása) — bármi
+          történhet. Ma működik, holnap nem, más gépen más. Nincs szabály.
+        </p>
+        <div class="boss-code">// "Works on my machine" –minden C dev</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WORKSHEET EXERCISES -->
+  <div class="worksheet-section">
+    <div class="section-title">✏ FELADATOK</div>
+    <div class="section-sub">// Ellenőrizd, mennyire sikerült internalizálnod a karaktereket</div>
+
+    <!-- Exercise 1 -->
+    <div class="exercise">
+      <div class="exercise-header">
+        <div class="exercise-num">01</div>
+        <div class="exercise-title">Melyik karakter vagyok? — Kódrészlet azonosítás</div>
+      </div>
+      <div class="exercise-body">
+        <p class="exercise-task">Minden kódrészlethez írd be a megfelelő karakter nevét!</p>
+        <table class="match-table">
+          <tr>
+            <th>Kódrészlet</th>
+            <th class="arrow"></th>
+            <th>Karakter neve</th>
+          </tr>
+          <tr>
+            <td><code>int x = 10;</code></td>
+            <td class="arrow">→</td>
+            <td class="answer-col"></td>
+          </tr>
+          <tr>
+            <td><code>int* p = &x;</code></td>
+            <td class="arrow">→</td>
+            <td class="answer-col"></td>
+          </tr>
+          <tr>
+            <td><code>void f(int x) { x=99; }</code></td>
+            <td class="arrow">→</td>
+            <td class="answer-col"></td>
+          </tr>
+          <tr>
+            <td><code>void f(int& x) { x=99; }</code></td>
+            <td class="arrow">→</td>
+            <td class="answer-col"></td>
+          </tr>
+          <tr>
+            <td><code>int* p = nullptr;</code></td>
+            <td class="arrow">→</td>
+            <td class="answer-col"></td>
+          </tr>
+          <tr>
+            <td><code>{ int n=5; } // n meghal</code></td>
+            <td class="arrow">→</td>
+            <td class="answer-col"></td>
+          </tr>
+          <tr>
+            <td><code>template&lt;T&gt; T add(T a, T b)</code></td>
+            <td class="arrow">→</td>
+            <td class="answer-col"></td>
+          </tr>
+          <tr>
+            <td><code>return n * f(n-1);</code></td>
+            <td class="arrow">→</td>
+            <td class="answer-col"></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- Exercise 2 -->
+    <div class="exercise">
+      <div class="exercise-header">
+        <div class="exercise-num">02</div>
+        <div class="exercise-title">Töltsd ki a hiányzó részeket!</div>
+      </div>
+      <div class="exercise-body">
+        <p class="exercise-task"><strong>a)</strong> Xerox Chad — érték szerinti átadás: az eredeti <strong>nem</strong> változik.</p>
+        <div class="answer-code">
+<span class="c-kw">void</span> <span class="c-fn">valtoztat</span>(<span class="c-type">int</span> <span class="c-kw">x</span>) { <span class="c-kw">x</span> = <span class="c-num">999</span>; }
+
+<span class="c-type">int</span> <span class="c-kw">chad</span> = <span class="blank"></span>;
+<span class="c-fn">valtoztat</span>(<span class="c-kw">chad</span>);
+<span class="c-comment">// chad értéke még mindig: ___________</span>
+        </div>
+        <p class="exercise-task"><strong>b)</strong> Pointer Pete — dereferencelés: mi lesz a kimenet?</p>
+        <div class="answer-code">
+<span class="c-type">int</span> <span class="c-kw">ertek</span> = <span class="c-num">55</span>;
+<span class="c-type">int</span><span class="c-op">*</span> <span class="c-kw">pete</span> = <span class="c-op">&</span><span class="c-kw">ertek</span>;
+<span class="c-op">*</span><span class="c-kw">pete</span> = <span class="c-num">77</span>;
+<span class="c-fn">printf</span>(<span class="c-str">"%d"</span>, <span class="c-kw">ertek</span>);  <span class="c-comment">// kimenet: ___________</span>
+        </div>
+        <p class="exercise-task"><strong>c)</strong> Recursion Rick — add meg a base case-t!</p>
+        <div class="answer-code">
+<span class="c-type">int</span> <span class="c-fn">osszeg</span>(<span class="c-type">int</span> <span class="c-kw">n</span>) {
+    <span class="c-kw">if</span> (n == <span class="blank-sm"></span>) <span class="c-kw">return</span> <span class="blank-sm"></span>; <span class="c-comment">// base case</span>
+    <span class="c-kw">return</span> <span class="c-kw">n</span> + <span class="c-fn">osszeg</span>(<span class="c-kw">n</span> - <span class="c-num">1</span>);
+}
+<span class="c-comment">// osszeg(4) = 4+3+2+1+0 = ___________</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Exercise 3 -->
+    <div class="exercise">
+      <div class="exercise-header">
+        <div class="exercise-num">03</div>
+        <div class="exercise-title">Melyik Boss Karakter jelenik meg? — Hibák azonosítása</div>
+      </div>
+      <div class="exercise-body">
+        <p class="exercise-task">Minden kódrészletnél írd be, hogy melyik Boss jelenik meg és miért!</p>
+        <div class="answer-code">
+<span class="c-comment">// a) Mi a baj?</span>
+<span class="c-type">int</span><span class="c-op">*</span> <span class="c-kw">p</span> = <span class="c-kw">nullptr</span>;
+<span class="c-fn">printf</span>(<span class="c-str">"%d"</span>, <span class="c-op">*</span><span class="c-kw">p</span>);
+        </div>
+        <div class="answer-lines">
+          <div class="answer-line"></div>
+        </div>
+        <div class="answer-code" style="margin-top:14px">
+<span class="c-comment">// b) Mi a baj?</span>
+<span class="c-type">int</span><span class="c-op">*</span> <span class="c-kw">p</span> = (<span class="c-type">int</span><span class="c-op">*</span>)<span class="c-fn">malloc</span>(<span class="c-kw">sizeof</span>(<span class="c-type">int</span>));
+<span class="c-op">*</span><span class="c-kw">p</span> = <span class="c-num">42</span>;
+<span class="c-comment">// ... free() soha nem hívódik</span>
+        </div>
+        <div class="answer-lines">
+          <div class="answer-line"></div>
+        </div>
+        <div class="answer-code" style="margin-top:14px">
+<span class="c-comment">// c) Mi a baj?</span>
+<span class="c-type">int</span> <span class="c-fn">vegtelen</span>(<span class="c-type">int</span> <span class="c-kw">n</span>) {
+    <span class="c-kw">return</span> <span class="c-fn">vegtelen</span>(<span class="c-kw">n</span>); <span class="c-comment">// base case?</span>
+}
+        </div>
+        <div class="answer-lines">
+          <div class="answer-line"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Exercise 4 -->
+    <div class="exercise">
+      <div class="exercise-header">
+        <div class="exercise-num">04</div>
+        <div class="exercise-title">Saját Brainrot Karakter — Rövid esszé</div>
+      </div>
+      <div class="exercise-body">
+        <p class="exercise-task">
+          Alkoss egy saját brainrot karaktert egy C/C++ fogalomhoz, amit nem találtál meg a listában!
+          (<em>pl. struct, enum, const, typedef, heap vs stack, virtual, ...</em>)
+          Add meg: <strong>Név, fogalom, személyiség, egy idézet, és egy kódpélda.</strong>
+        </p>
+        <div class="answer-lines">
+          <div class="answer-line"></div>
+          <div class="answer-line"></div>
+          <div class="answer-line"></div>
+          <div class="answer-line"></div>
+          <div class="answer-line"></div>
+          <div class="answer-line"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div>
+      <div>C / C++ BRAINROT WORKSHEET</div>
+      <div style="margin-top:4px">// Válasz-kulcs: ask your local compiler</div>
+    </div>
+    <div class="score-box">
+      PONTSZÁM
+      <span>__ / 20</span>
+    </div>
+    <div style="text-align:right">
+      <div>Karakterek: 8 alap + 4 boss</div>
+      <div style="margin-top:4px">Feladatok: 4 db</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

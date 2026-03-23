@@ -1,0 +1,117 @@
+========================================
+C/C++ BRAINROT WORKSHEET - MEGOLDÁSOK
+========================================
+
+EXERCISE 01 - Melyik karakter vagyok?
+=====================================
+
+1. int x = 10;
+   → VÁLTOZÓ VLAD (Variable)
+
+2. int* p = &x;
+   → POINTER PETE (Creates a pointer to x)
+
+3. void f(int x) { x=99; }
+   → XEROX CHAD (Pass by value - copy, doesn't affect original)
+
+4. void f(int& x) { x=99; }
+   → KEY DEALER KEVIN (Pass by reference - modifies original)
+
+5. int* p = nullptr;
+   → NULL NICK (Null pointer / semmi)
+
+6. { int n=5; } // n meghal
+   → SCOPE SENSEI (Variable dies at end of block)
+
+7. template<T> T add(T a, T b)
+   → GENERIC GREG (Template - generic type T)
+
+8. return n * f(n-1);
+   → RECURSION RICK (Function calls itself recursively)
+
+
+EXERCISE 02 - Töltsd ki a hiányzó részeket!
+==========================================
+
+a) XEROX CHAD - Érték szerinti átadás:
+   int chad = 5;
+   valtoztat(chad);
+   // chad értéke még mindig: 5
+   (Az eredeti nem változik, csak a másolat)
+
+b) POINTER PETE - Dereferencelés:
+   int ertek = 55;
+   int* pete = &ertek;
+   *pete = 77;
+   printf("%d", ertek);  // kimenet: 77
+   (Az eredeti érték módosult a pointeren keresztül)
+
+c) RECURSION RICK - Base case:
+   int osszeg(int n) {
+       if (n == 0) return 0;  // base case
+       return n + osszeg(n - 1);
+   }
+   // osszeg(4) = 4+3+2+1+0 = 10
+   (Base case: n==0 returns 0; rekurzív képlet: n + osszeg(n-1))
+
+
+EXERCISE 03 - Melyik Boss Karakter jelenik meg?
+==============================================
+
+a) int* p = nullptr;
+   printf("%d", *p);
+   
+   BOSS: SEGFAULT SAMU (💀)
+   OK: Null Nick-re dereferencelünk, amely érvénytelen memóriacím.
+       A program azonnal Segmentaton Fault hibával leromlik.
+
+b) int* p = (int*)malloc(sizeof(int));
+   *p = 42;
+   // ... free() soha nem hívódik
+   
+   BOSS: MEMORY LEAK MIKI (👻)
+   OK: A malloc()-tal lefoglalt memória soha nem szabadul fel.
+       Az erőforrásleak csendesen fogyasztja a memóriát.
+
+c) int vegtelen(int n) {
+       return vegtelen(n);  // base case?
+   }
+   
+   BOSS: STACK OVERFLOW STAN (🌊)
+   OK: Nincs base case, így a függvény végtelen mélységbe hívja magát.
+       A call stack megtelik és a program összeomlik.
+
+
+EXERCISE 04 - Saját Brainrot Karakter
+=====================================
+
+Név: CONST CATHERINE
+
+Fogalom: CONST (Konstans - megváltoztathatatlan érték)
+
+Osobyiség:
+Catherine imád rögzítettséget. Amikor meglátja, hogy valami const:
+"Ez már az enyém. Soha nem fog változni." Senki sem módosíthatja,
+még a fordító is megakadályozza az illetéktelen változtatást.
+Catherine védte az értékeid, amikor egyébként megsemmisülnének.
+
+Idézet:
+"Egyszer odaadtam. Ezután többé nem adok. Ez törvény, nem ajánlat."
+
+Kódpélda:
+
+const int catherines_age = 42;
+catherines_age = 43;  // ✗ error: assignment to const variable
+
+const char* catherine = "locked";
+// *catherine = 'X';  // ✗ error: cannot assign to const char
+
+const int* ptr = &catherines_age;
+// *ptr = 50;  // ✗ error: cannot modify const int through const pointer
+
+Catherine azt mondja: "A const segít megelőzni az accidental modifikációkat.
+Rövidítse a debuggolási időt és nagyobb biztonságot nyújt."
+
+Boss-szintű hatalom: UNDEFINED BEHAVIOR UBUL-tól megvéd azáltal,
+hogy garantálja az érték stabilitását fordítási időben.
+
