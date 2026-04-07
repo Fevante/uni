@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OOP Brainrot Worksheet – C++</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Permanent+Marker&family=DM+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0f;
+    --white: #f0eee8;
+    --cyan:   #00E5FF;
+    --lime:   #B6FF00;
+    --rose:   #FF3870;
+    --amber:  #FFAB00;
+    --violet: #BF5FFF;
+    --teal:   #00CBA8;
+    --sky:    #38BFFF;
+    --orange: #FF6B1A;
+    --indigo: #4F6EFF;
+    --pink:   #FF4DB8;
+    --red:    #FF3B3B;
+    --gray:   #2a2a2a;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    padding: 40px 20px;
+  }
+
+  .page { max-width: 960px; margin: 0 auto; }
+
+  /* ───── HEADER ───── */
+  .header { text-align:center; margin-bottom: 44px; }
+
+  .header-badge {
+    display:inline-block;
+    background: var(--lime);
+    color: var(--black);
+    font-family:'Bebas Neue',sans-serif;
+    font-size:12px; letter-spacing:3px;
+    padding:4px 18px; margin-bottom:12px;
+  }
+
+  .header h1 {
+    font-family:'Bebas Neue',sans-serif;
+    font-size: clamp(48px,9vw,90px);
+    line-height:0.88; letter-spacing:-1px;
+  }
+  .header h1 .l1 { color:var(--white); display:block; }
+  .header h1 .l2 { color:var(--lime); display:block; }
+  .header h1 .l3 {
+    color:transparent;
+    -webkit-text-stroke:2px var(--white);
+    display:block;
+  }
+
+  .header-sub {
+    margin-top:14px;
+    font-family:'Space Mono',monospace;
+    font-size:12px; color:#666; letter-spacing:1px;
+  }
+
+  .stripe {
+    margin:30px 0; height:7px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--lime)   0   20px,
+      var(--cyan)  20px 40px,
+      var(--rose)  40px 60px,
+      var(--amber) 60px 80px,
+      var(--violet) 80px 100px
+    );
+  }
+
+  /* ───── CARDS ───── */
+  .cards-grid {
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(390px,1fr));
+    gap:22px; margin-bottom:40px;
+  }
+
+  .card {
+    border:3px solid;
+    position:relative; overflow:hidden;
+    transition: transform .13s ease;
+  }
+  .card:hover { transform:translate(-3px,-3px); }
+
+  .card::after {
+    content:''; position:absolute;
+    top:5px; left:5px; right:-5px; bottom:-5px;
+    z-index:-1;
+  }
+
+  .c-cyan   { border-color:var(--cyan);   background:#00141a; }
+  .c-cyan::after   { background:var(--cyan); }
+
+  .c-lime   { border-color:var(--lime);   background:#0d1500; }
+  .c-lime::after   { background:var(--lime); }
+
+  .c-rose   { border-color:var(--rose);   background:#1e0008; }
+  .c-rose::after   { background:var(--rose); }
+
+  .c-amber  { border-color:var(--amber);  background:#1a1000; }
+  .c-amber::after  { background:var(--amber); }
+
+  .c-violet { border-color:var(--violet); background:#130020; }
+  .c-violet::after { background:var(--violet); }
+
+  .c-teal   { border-color:var(--teal);   background:#001a15; }
+  .c-teal::after   { background:var(--teal); }
+
+  .c-sky    { border-color:var(--sky);    background:#001522; }
+  .c-sky::after    { background:var(--sky); }
+
+  .c-orange { border-color:var(--orange); background:#1a0a00; }
+  .c-orange::after { background:var(--orange); }
+
+  .c-indigo { border-color:var(--indigo); background:#080e2a; }
+  .c-indigo::after { background:var(--indigo); }
+
+  .c-pink   { border-color:var(--pink);   background:#1a0012; }
+  .c-pink::after   { background:var(--pink); }
+
+  .c-red2   { border-color:#ff6666;       background:#1a0808; }
+  .c-red2::after   { background:#ff6666; }
+
+  .c-gray2  { border-color:#777;          background:#111; }
+  .c-gray2::after  { background:#555; }
+
+  /* header */
+  .card-header {
+    padding:15px 18px 11px;
+    border-bottom:2px solid currentColor;
+    display:flex; align-items:center; gap:13px;
+  }
+  .c-cyan   .card-header { color:var(--cyan); }
+  .c-lime   .card-header { color:var(--lime); }
+  .c-rose   .card-header { color:var(--rose); }
+  .c-amber  .card-header { color:var(--amber); }
+  .c-violet .card-header { color:var(--violet); }
+  .c-teal   .card-header { color:var(--teal); }
+  .c-sky    .card-header { color:var(--sky); }
+  .c-orange .card-header { color:var(--orange); }
+  .c-indigo .card-header { color:var(--indigo); }
+  .c-pink   .card-header { color:var(--pink); }
+  .c-red2   .card-header { color:#ff6666; }
+  .c-gray2  .card-header { color:#999; }
+
+  .card-emoji { font-size:34px; line-height:1; flex-shrink:0; }
+  .card-name {
+    font-family:'Bebas Neue',sans-serif;
+    font-size:27px; line-height:1;
+    color:var(--white); letter-spacing:.5px;
+  }
+  .card-concept {
+    font-family:'Space Mono',monospace;
+    font-size:10.5px; letter-spacing:1px; margin-top:2px; opacity:.85;
+  }
+
+  .card-body { padding:15px 18px; }
+
+  .card-desc {
+    font-size:13.5px; line-height:1.65; color:#ccc; margin-bottom:12px;
+  }
+  .card-desc strong { color:var(--white); }
+
+  .card-quote {
+    font-family:'Permanent Marker',cursive;
+    font-size:13px; line-height:1.5;
+    padding:9px 13px; border-left:3px solid currentColor;
+    background:rgba(255,255,255,.04);
+    color:var(--white); margin-bottom:12px;
+  }
+  .c-cyan   .card-quote { border-color:var(--cyan); }
+  .c-lime   .card-quote { border-color:var(--lime); }
+  .c-rose   .card-quote { border-color:var(--rose); }
+  .c-amber  .card-quote { border-color:var(--amber); }
+  .c-violet .card-quote { border-color:var(--violet); }
+  .c-teal   .card-quote { border-color:var(--teal); }
+  .c-sky    .card-quote { border-color:var(--sky); }
+  .c-orange .card-quote { border-color:var(--orange); }
+  .c-indigo .card-quote { border-color:var(--indigo); }
+  .c-pink   .card-quote { border-color:var(--pink); }
+  .c-red2   .card-quote { border-color:#ff6666; }
+  .c-gray2  .card-quote { border-color:#888; }
+
+  .card-code {
+    background:#000; border:1px solid #2a2a2a;
+    padding:11px 13px;
+    font-family:'Space Mono',monospace;
+    font-size:11.5px; line-height:1.85;
+    overflow-x:auto; margin-bottom:12px;
+  }
+
+  /* syntax */
+  .kw  { color:#569CD6; }
+  .ty  { color:#4EC9B0; }
+  .st  { color:#CE9178; }
+  .nm  { color:#B5CEA8; }
+  .cm  { color:#6A9955; }
+  .fn  { color:#DCDCAA; }
+  .op  { color:#FFE135; }
+  .pp  { color:#C586C0; }
+
+  .card-note {
+    font-size:11.5px; font-family:'Space Mono',monospace;
+    padding:8px 12px; border:1px dashed;
+    color:#bbb;
+  }
+  .c-cyan   .card-note { border-color:var(--cyan);   background:rgba(0,229,255,.06); }
+  .c-lime   .card-note { border-color:var(--lime);   background:rgba(182,255,0,.06); }
+  .c-rose   .card-note { border-color:var(--rose);   background:rgba(255,56,112,.06); }
+  .c-amber  .card-note { border-color:var(--amber);  background:rgba(255,171,0,.06); }
+  .c-violet .card-note { border-color:var(--violet); background:rgba(191,95,255,.06); }
+  .c-teal   .card-note { border-color:var(--teal);   background:rgba(0,203,168,.06); }
+  .c-sky    .card-note { border-color:var(--sky);    background:rgba(56,191,255,.06); }
+  .c-orange .card-note { border-color:var(--orange); background:rgba(255,107,26,.06); }
+  .c-indigo .card-note { border-color:var(--indigo); background:rgba(79,110,255,.06); }
+  .c-pink   .card-note { border-color:var(--pink);   background:rgba(255,77,184,.06); }
+  .c-red2   .card-note { border-color:#ff6666;       background:rgba(255,100,100,.06); }
+  .c-gray2  .card-note { border-color:#666;          background:rgba(120,120,120,.06); }
+
+  .note-lbl {
+    font-size:9.5px; letter-spacing:2px;
+    margin-bottom:3px; opacity:.55;
+  }
+
+  /* ───── ACCESS MODIFIER TABLE ───── */
+  .access-table {
+    width:100%; border-collapse:collapse;
+    font-size:11.5px; font-family:'Space Mono',monospace;
+    margin-bottom:12px;
+  }
+  .access-table th {
+    background:#111; padding:6px 10px;
+    border:1px solid #333; color:var(--amber);
+    font-family:'Bebas Neue',sans-serif; font-size:14px; letter-spacing:1px;
+  }
+  .access-table td {
+    padding:6px 10px; border:1px solid #2a2a2a; vertical-align:middle;
+  }
+  .access-table tr:nth-child(even) td { background:#0d0d0d; }
+  .pub  { color:#00E5FF; font-weight:700; }
+  .prot { color:#FFAB00; font-weight:700; }
+  .priv { color:#FF3870; font-weight:700; }
+
+  /* ───── WORKSHEET ───── */
+  .worksheet-section { margin-top:50px; }
+
+  .sec-title {
+    font-family:'Bebas Neue',sans-serif;
+    font-size:34px; color:var(--lime); letter-spacing:2px; margin-bottom:3px;
+  }
+  .sec-sub {
+    font-family:'Space Mono',monospace;
+    font-size:12px; color:#555; margin-bottom:22px;
+  }
+
+  .exercise {
+    border:2px solid #2a2a2a;
+    margin-bottom:20px; background:#0f0f0f;
+  }
+  .ex-header {
+    background:#181818; padding:11px 18px;
+    display:flex; align-items:center; gap:12px;
+    border-bottom:2px solid #2a2a2a;
+  }
+  .ex-num {
+    font-family:'Bebas Neue',sans-serif;
+    font-size:21px; color:var(--lime); min-width:30px;
+  }
+  .ex-title { font-weight:700; font-size:14.5px; color:var(--white); }
+  .ex-body  { padding:15px 18px; }
+
+  .ex-task {
+    font-size:13.5px; color:#bbb; margin-bottom:11px; line-height:1.6;
+  }
+  .ex-task strong { color:var(--white); }
+
+  .ans-code {
+    background:#000; border:1px solid #2a2a2a;
+    padding:11px 13px; font-family:'Space Mono',monospace;
+    font-size:11.5px; line-height:1.85; margin-bottom:10px;
+  }
+
+  .blank {
+    display:inline-block; border-bottom:2px solid var(--lime);
+    height:17px; vertical-align:bottom; margin:0 3px;
+  }
+  .bl-lg { width:110px; }
+  .bl-md { width:80px; }
+  .bl-sm { width:55px; }
+
+  .match-table {
+    width:100%; border-collapse:collapse; font-size:12.5px;
+  }
+  .match-table th {
+    background:#181818; padding:8px 12px;
+    border:1px solid #2a2a2a;
+    font-family:'Bebas Neue',sans-serif; font-size:15px;
+    letter-spacing:1px; color:var(--lime);
+  }
+  .match-table td {
+    padding:8px 12px; border:1px solid #1e1e1e; vertical-align:top;
+  }
+  .match-table .code-col {
+    font-family:'Space Mono',monospace; color:var(--cyan); width:52%;
+  }
+  .match-table .ans-col { color:#444; font-style:italic; width:44%; }
+  .match-table .arr-col {
+    color:var(--lime); font-family:'Bebas Neue',sans-serif;
+    font-size:18px; text-align:center; width:4%; padding:8px 2px;
+  }
+
+  .ans-line {
+    border-bottom:2px solid #252525;
+    height:34px; margin:7px 0; width:100%;
+  }
+
+  /* ───── UML MINI ───── */
+  .uml-box {
+    border:2px solid var(--cyan); background:#000;
+    font-family:'Space Mono',monospace; font-size:11px;
+    margin-bottom:12px; display:inline-block; min-width:200px;
+  }
+  .uml-title {
+    background:var(--cyan); color:#000;
+    padding:4px 12px; font-weight:700; font-size:12px; text-align:center;
+  }
+  .uml-section { padding:6px 12px; border-top:1px solid var(--cyan); }
+  .uml-pub  { color:var(--cyan); }
+  .uml-prot { color:var(--amber); }
+  .uml-priv { color:var(--rose); }
+
+  /* ───── FOOTER ───── */
+  .footer {
+    margin-top:56px; padding-top:22px;
+    border-top:2px solid #1e1e1e;
+    display:flex; justify-content:space-between; align-items:center;
+    font-family:'Space Mono',monospace; font-size:11px; color:#3a3a3a;
+  }
+  .score-box {
+    border:2px solid #2a2a2a; padding:8px 22px; text-align:center;
+  }
+  .score-box span {
+    display:block; font-family:'Bebas Neue',sans-serif;
+    font-size:22px; color:var(--white); margin-top:2px;
+  }
+
+  @media print {
+    body { background:#fff; color:#000; padding:16px; }
+    .card { break-inside:avoid; }
+    .exercise { break-inside:avoid; }
+    .cards-grid { grid-template-columns:1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-badge">C++ · OBJEKTUMORIENTÁLT PARADIGMA · OOP BRAINROT</div>
+  <h1>
+    <span class="l1">OSZTÁLYOK,</span>
+    <span class="l2">OBJEKTUMOK</span>
+    <span class="l3">&amp; BRAINROT</span>
+  </h1>
+  <div class="header-sub">// Tanuld meg, mielőtt az objektum tanul meg téged //</div>
+</div>
+
+<div class="stripe"></div>
+
+<!-- ══════════ CARDS ══════════ -->
+<div class="cards-grid">
+
+  <!-- 1. Osztály Olga -->
+  <div class="card c-cyan">
+    <div class="card-header">
+      <div class="card-emoji">📐</div>
+      <div>
+        <div class="card-name">Osztály Olga</div>
+        <div class="card-concept" style="color:var(--cyan)">CLASS &nbsp;·&nbsp; class Valami { };</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">
+        Olga egy <strong>tervrajz</strong>. Leírja, milyen lesz egy dolog —
+        milyen adatai lesznek és mit tud csinálni —
+        de ő maga <strong>nem hoz létre semmit</strong>.
+        Amíg nem példányosítják, csak egy papírlap.
+      </p>
+      <div class="card-quote">"Én a terv vagyok. Nem a ház."</div>
+      <div class="card-code">
+<span class="kw">class</span> <span class="ty">Kutya</span> {
+<span class="kw">public</span>:
+    <span class="ty">std::string</span> <span class="fn">nev</span>;
+    <span class="kw">int</span> <span class="fn">kor</span>;
+    <span class="kw">void</span> <span class="fn">ugat</span>() {
+        <span class="cm">// adatok + viselkedés</span>
+    }
+}; <span class="cm">// ← pontosvessző kötelező!</span>
+      </div>
+      <div class="card-note">
+        <div class="note-lbl">💡 ALAP</div>
+        Az osztály csak leírás. Memóriát <strong>nem foglal</strong> magától.
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Objektum Oszkár -->
+  <div class="card c-lime">
+    <div class="card-header">
+      <div class="card-emoji">🐕</div>
+      <div>
+        <div class="card-name">Objektum Oszkár</div>
+        <div class="card-concept" style="color:var(--lime)">OBJECT / INSTANCE &nbsp;·&nbsp; Kutya k;</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">
+        Oszkár az, aki <strong>ténylegesen létezik</strong>. Ő az Osztály Olga tervrajzából
+        életre hívott, saját memóriával rendelkező <strong>konkrét példány</strong>.
+        Több Oszkár is lehet egyszerre — mind más, mind Kutya.
+      </p>
+      <div class="card-quote">"Olga a tervem. Én a valóság."</div>
+      <div class="card-code">
+<span class="ty">Kutya</span> <span class="fn">oscar</span>;         <span class="cm">// stack-en</span>
+<span class="fn">oscar</span>.nev = <span class="st">"Oszkár"</span>;
+<span class="fn">oscar</span>.kor = <span class="nm">3</span>;
+<span class="fn">oscar</span>.<span class="fn">ugat</span>();
+
+<span class="ty">Kutya</span>* <span class="fn">buddy</span> = <span class="kw">new</span> <span class="ty">Kutya</span>(); <span class="cm">// heap-en</span>
+<span class="kw">delete</span> <span class="fn">buddy</span>; <span class="cm">// te takarítasz</span>
+      </div>
+      <div class="card-note">
+        <div class="note-lbl">💡 STACK VS HEAP</div>
+        Stack: automatikusan megszűnik. Heap: <code>new</code> után <strong>neked kell</strong> <code>delete</code>.
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Konstruktor Kristóf -->
+  <div class="card c-rose">
+    <div class="card-header">
+      <div class="card-emoji">🍼</div>
+      <div>
+        <div class="card-name">Konstruktor Kristóf</div>
+        <div class="card-concept" style="color:var(--rose)">CONSTRUCTOR &nbsp;·&nbsp; OsztályNev()</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">
+        Kristóf az a srác, aki <strong>minden objektum születésekor automatikusan fut le</strong>.
+        Beállítja az értékeket, lefoglalja az erőforrásokat.
+        Nem hívod te — ő jön magától, amikor az objektum megszületik.
+      </p>
+      <div class="card-quote">"Senki nem kéri, hogy legyek ott. Mégis ott vagyok."</div>
+      <div class="card-code">
+<span class="kw">class</span> <span class="ty">Kutya</span> {
+<span class="kw">public</span>:
+    <span class="ty">std::string</span> nev;
+    <span class="cm">// konstruktor:</span>
+    <span class="fn">Kutya</span>(<span class="ty">std::string</span> n) {
+        nev = n; <span class="cm">// Kristóf beállít</span>
+    }
+    <span class="cm">// default konstruktor:</span>
+    <span class="fn">Kutya</span>() : nev(<span class="st">"Névtelen"</span>) {}
+};
+      </div>
+      <div class="card-note">
+        <div class="note-lbl">💡 OVERLOAD</div>
+        Lehet több konstruktor is — különböző paraméterlistával.
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Destruktor Dezső -->
+  <div class="card c-amber">
+    <div class="card-header">
+      <div class="card-emoji">🧹</div>
+      <div>
+        <div class="card-name">Destruktor Dezső</div>
+        <div class="card-concept" style="color:var(--amber)">DESTRUCTOR &nbsp;·&nbsp; ~OsztályNev()</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">
+        Dezső <strong>utolsónak megy el</strong>. Amikor egy objektum meghal
+        (scope vége, <code>delete</code>), Dezső automatikusan lefut
+        és elpakolja, amit Kristóf hozott létre. Ha Dezső nem takarít el
+        → <strong>Memory Leak Miki</strong> jön.
+      </p>
+      <div class="card-quote">"Mindenki elmegy. Én maradok — hogy letakarítson."</div>
+      <div class="card-code">
+<span class="kw">class</span> <span class="ty">Kutya</span> {
+<span class="kw">public</span>:
+    <span class="kw">int</span>* <span class="fn">adat</span>;
+
+    <span class="fn">Kutya</span>()  { adat = <span class="kw">new</span> <span class="kw">int</span>(<span class="nm">42</span>); }
+
+    ~<span class="fn">Kutya</span>() { <span class="cm">// ← Dezső</span>
+        <span class="kw">delete</span> adat;
+        <span class="cm">// felszabadítás!</span>
+    }
+};
+      </div>
+      <div class="card-note">
+        <div class="note-lbl">⚠ SZABÁLY OF THREE</div>
+        Ha van destruktored → kell copy constructor + copy assignment is!
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Bezáró Bence (public/protected/private) -->
+  <div class="card c-violet">
+    <div class="card-header">
+      <div class="card-emoji">🚪</div>
+      <div>
+        <div class="card-name">Bezáró Bence</div>
+        <div class="card-concept" style="color:var(--violet)">ENCAPSULATION &nbsp;·&nbsp; public / protected / private</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">
+        Bence a <strong>bouncer</strong>. Ő dönti el, ki láthat bele az osztályba és ki nem.
+        Háromféle ajtója van — attól függ ki mehet be.
+      </p>
+      <div class="card-quote">"A listán vagy, vagy nem vagy. Más nincs."</div>
+      <table class="access-table">
+        <tr>
+          <th>Kulcsszó</th><th>Saját osztály</th><th>Leszármazott</th><th>Mindenki</th>
+        </tr>
+        <tr>
+          <td class="pub">public</td>
+          <td>✅</td><td>✅</td><td>✅</td>
+        </tr>
+        <tr>
+          <td class="prot">protected</td>
+          <td>✅</td><td>✅</td><td>❌</td>
+        </tr>
+        <tr>
+          <td class="priv">private</td>
+          <td>✅</td><td>❌</td><td>❌</td>
+        </tr>
+      </table>
+      <div class="card-code">
+<span class="kw">class</span> <span class="ty">Bank</span> {
+<span class="kw">public</span>:
+    <span class="kw">void</span> <span class="fn">befizet</span>(<span class="kw">int</span> x) { egyenleg += x; }
+<span class="kw">protected</span>:
+    <span class="kw">int</span> hitelkeret = <span class="nm">10000</span>;
+<span class="kw">private</span>:
+    <span class="kw">int</span> egyenleg = <span class="nm">0</span>; <span class="cm">// SENKI nem látja</span>
+};
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Öröklődő Olivér -->
+  <div class="card c-teal">
+    <div class="card-header">
+      <div class="card-emoji">🧬</div>
+      <div>
+        <div class="card-name">Öröklődő Olivér</div>
+        <div class="card-concept" style="color:var(--teal)">INHERITANCE &nbsp;·&nbsp; class B : public A</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">
+        Olivér <strong>megörökli</strong> a szülei tulajdonságait — és ráadásul
+        saját dolgokat is hozzáad. A szülőosztály mindent megad, a gyerek
+        <strong>kibővítheti vagy felülírhatja</strong>. Olivérből akár több szint is lehet.
+      </p>
+      <div class="card-quote">"Apa mindent adott. Én még többet tettem hozzá."</div>
+      <div class="card-code">
+<span class="kw">class</span> <span class="ty">Allat</span> {          <span class="cm">// szülő</span>
+<span class="kw">public</span>:
+    <span class="kw">void</span> <span class="fn">lelegzik</span>() { }
+};
+
+<span class="kw">class</span> <span class="ty">Kutya</span> : <span class="kw">public</span> <span class="ty">Allat</span> {
+<span class="kw">public</span>:             <span class="cm">// Kutya IS-A Allat</span>
+    <span class="kw">void</span> <span class="fn">ugat</span>() { }  <span class="cm">// + saját metódus</span>
+};
+<span class="cm">// Kutya tud lelegzik()-et is!</span>
+      </div>
+      <div class="card-note">
+        <div class="note-lbl">💡 IS-A SZABÁLY</div>
+        Öröklés = "IS-A" kapcsolat. Kutya IS-A Állat ✅ &nbsp;|&nbsp; Kutya IS-A Autó ❌
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. Polimorf Péter -->
+  <div class="card c-sky">
+    <div class="card-header">
+      <div class="card-emoji">🎭</div>
+      <div>
+        <div class="card-name">Polimorf Péter</div>
+        <div class="card-concept" style="color:var(--sky)">POLYMORPHISM &nbsp;·&nbsp; virtual + override</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">
+        Péter <strong>különböző arcokat visel</strong>, de mindig ugyanolyan névvel szólítják.
+        Ugyanaz a függvénynév (<code>hangotAd()</code>), de Kutyán, Macskán, Madáron
+        hívva <strong>mindenki mást csinál</strong>. A maszk mögött az igazi típus dönt.
+      </p>
+      <div class="card-quote">"Mindenki hangotAd()-nak hív. De senki nem tudja, mit fogok mondani."</div>
+      <div class="card-code">
+<span class="kw">class</span> <span class="ty">Allat</span> {
+<span class="kw">public</span>:
+    <span class="kw">virtual</span> <span class="kw">void</span> <span class="fn">hangotAd</span>() {
+        <span class="cm">// alap</span>
+    }
+};
+<span class="kw">class</span> <span class="ty">Kutya</span> : <span class="kw">public</span> <span class="ty">Allat</span> {
+    <span class="kw">void</span> <span class="fn">hangotAd</span>() <span class="kw">override</span> {
+        <span class="cm">// "Vau!"</span>
+    }
+};
+<span class="kw">class</span> <span class="ty">Macska</span> : <span class="kw">public</span> <span class="ty">Allat</span> {
+    <span class="kw">void</span> <span class="fn">hangotAd</span>() <span class="kw">override</span> {
+        <span class="cm">// "Miau!"</span>
+    }
+};
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. Late Binding Lajos -->
+  <div class="card c-orange">
+    <div class="card-header">
+      <div class="card-emoji">⏳</div>
+      <div>
+        <div class="card-name">Late Binding Lajos</div>
+        <div class="card-concept" style="color:var(--orange)">DYNAMIC DISPATCH &nbsp;·&nbsp; virtual, futásidő</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">
+        Lajos <strong>nem dönt előre</strong>. A fordító nem tudja, melyik
+        <code>hangotAd()</code> fog lefutni — ezt csak <strong>futásidőben</strong>
+        dönti el a vtable. Rugalmas, de lassabb mint Early Eddie.
+        <code>virtual</code> kulcsszó kapcsolja be.
+      </p>
+      <div class="card-quote">"Ma még nem tudom, mit fogok mondani. Majd meglátjuk futáskor."</div>
+      <div class="card-code">
+<span class="ty">Allat</span>* <span class="fn">a</span> = <span class="kw">new</span> <span class="ty">Kutya</span>();
+<span class="cm">// Melyik hangotAd() fut le?</span>
+<span class="cm">// A fordító NEM tudja...</span>
+<span class="fn">a</span>-><span class="fn">hangotAd</span>();
+<span class="cm">// ...futáskor derül ki: Kutya!</span>
+<span class="cm">// → vtable pointer dönti el</span>
+      </div>
+      <div class="card-note">
+        <div class="note-lbl">💡 VTABLE</div>
+        A <code>virtual</code> egy rejtett mutatótáblát (vtable) hoz létre az osztályban.
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. Early Binding Eddie -->
+  <div class="card c-indigo">
+    <div class="card-header">
+      <div class="card-emoji">⚡</div>
+      <div>
+        <div class="card-name">Early Binding Eddie</div>
+        <div class="card-concept" style="color:var(--indigo)">STATIC DISPATCH &nbsp;·&nbsp; fordítási idő</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">
+        Eddie <strong>már fordítási időben tudja</strong>, melyik függvény fog lefutni.
+        Nem kell keresgélni futáskor — a fordító direkt beledrótozza a hívást.
+        <strong>Gyorsabb</strong> mint Lajos, de nem tud "meglepetés típust" kezelni.
+      </p>
+      <div class="card-quote">"Én már a fordítóval megbeszéltük. Futáskor nincs megbeszélnivaló."</div>
+      <div class="card-code">
+<span class="kw">class</span> <span class="ty">Kutya</span> {
+<span class="kw">public</span>:
+    <span class="cm">// NEM virtual → Eddie dönt</span>
+    <span class="kw">void</span> <span class="fn">hangotAd</span>() { <span class="cm">// "Vau"</span> }
+};
+
+<span class="ty">Kutya</span> k;
+k.<span class="fn">hangotAd</span>(); <span class="cm">// fordítókor kötve</span>
+
+<span class="cm">// Template is early binding:</span>
+<span class="fn">osszeAdd</span>&lt;<span class="ty">int</span>&gt;(<span class="nm">1</span>,<span class="nm">2</span>); <span class="cm">// fordítókor</span>
+      </div>
+      <div class="card-note">
+        <div class="note-lbl">💡 SEBESSÉG</div>
+        Eddie általában gyorsabb. Lajos rugalmasabb. Polimorfizmushoz Lajos kell.
+      </div>
+    </div>
+  </div>
+
+  <!-- 10. Absztrakt Anikó -->
+  <div class="card c-pink">
+    <div class="card-header">
+      <div class="card-emoji">👻</div>
+      <div>
+        <div class="card-name">Absztrakt Anikó</div>
+        <div class="card-concept" style="color:var(--pink)">ABSTRACT CLASS &nbsp;·&nbsp; pure virtual</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">
+        Anikó <strong>ígér mindent, de nem csinál semmit</strong>.
+        Van legalább egy <strong>pure virtual</strong> függvénye (<code>= 0</code>),
+        ami miatt <strong>soha nem lehet belőle közvetlen objektumot csinálni</strong>.
+        Leszármazottjai kötelesek megvalósítani.
+      </p>
+      <div class="card-quote">"Tudom, mit kell csinálni. De én azt nem csinálom meg. Ez a te dolgod."</div>
+      <div class="card-code">
+<span class="kw">class</span> <span class="ty">Allat</span> {       <span class="cm">// absztrakt!</span>
+<span class="kw">public</span>:
+    <span class="kw">virtual</span> <span class="kw">void</span> <span class="fn">hangotAd</span>() = <span class="nm">0</span>;
+    <span class="cm">// ^^ pure virtual = 0</span>
+    <span class="kw">void</span> <span class="fn">lelegzik</span>() { } <span class="cm">// ← ez lehet</span>
+};
+
+<span class="ty">Allat</span> a; <span class="cm">// ✗ HIBA! Nem lehet!</span>
+<span class="ty">Kutya</span> k; <span class="cm">// ✓ ha Kutya impl.</span>
+      </div>
+      <div class="card-note">
+        <div class="note-lbl">💡 MIKOR?</div>
+        Ha van közös alap viselkedés + kötelező metódusok → absztrakt osztály.
+      </div>
+    </div>
+  </div>
+
+  <!-- 11. Interfész István -->
+  <div class="card c-red2">
+    <div class="card-header">
+      <div class="card-emoji">📋</div>
+      <div>
+        <div class="card-name">Interfész István</div>
+        <div class="card-concept" style="color:#ff8888">INTERFACE &nbsp;·&nbsp; tiszta absztrakt osztály</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">
+        István egy <strong>szerződés</strong>. Semmi implementáció, csak ígéret:
+        "aki velem dolgozik, megvalósítja ezeket a metódusokat."
+        C++-ban nincs külön <code>interface</code> kulcsszó —
+        <strong>tisztán absztrakt osztályként</strong> valósítják meg.
+      </p>
+      <div class="card-quote">"Nem mondok el semmit rólad. Csak azt, mit KELL tudnod."</div>
+      <div class="card-code">
+<span class="kw">class</span> <span class="ty">IHangos</span> {         <span class="cm">// interfész</span>
+<span class="kw">public</span>:
+    <span class="kw">virtual</span> <span class="kw">void</span> <span class="fn">hangotAd</span>() = <span class="nm">0</span>;
+    <span class="kw">virtual</span> ~<span class="fn">IHangos</span>() = <span class="kw">default</span>;
+};
+
+<span class="kw">class</span> <span class="ty">Kutya</span>
+    : <span class="kw">public</span> <span class="ty">IHangos</span> { <span class="cm">// kötelező impl.</span>
+    <span class="kw">void</span> <span class="fn">hangotAd</span>() <span class="kw">override</span> { }
+};
+      </div>
+      <div class="card-note">
+        <div class="note-lbl">⚠ ABSZTRAKT vs INTERFÉSZ</div>
+        Absztrakt: van közös kód + pure virtual. Interfész: CSAK pure virtual, semmi más.
+      </div>
+    </div>
+  </div>
+
+  <!-- 12. Példányosító Pál -->
+  <div class="card c-gray2">
+    <div class="card-header">
+      <div class="card-emoji">⚗️</div>
+      <div>
+        <div class="card-name">Példányosító Pál</div>
+        <div class="card-concept" style="color:#aaa">INSTANTIATION &nbsp;·&nbsp; Osztaly obj;</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">
+        Pál az a <strong>pillanat</strong>, amikor az osztályból objektum lesz.
+        Memóriafoglalás + konstruktor hívás — ez a születés.
+        Stacken vagy heapen történhet, és <strong>azonnal Kristóf fut le</strong>.
+      </p>
+      <div class="card-quote">"Olga adja a tervet. Én hozom létre. Kristóf köszönt."</div>
+      <div class="card-code">
+<span class="cm">// Stack (automatikus)</span>
+<span class="ty">Kutya</span> <span class="fn">k1</span>(<span class="st">"Rex"</span>);   <span class="cm">// Pál + Kristóf</span>
+
+<span class="cm">// Heap (manuális)</span>
+<span class="ty">Kutya</span>* <span class="fn">k2</span> = <span class="kw">new</span> <span class="ty">Kutya</span>(<span class="st">"Blöki"</span>);
+<span class="kw">delete</span> <span class="fn">k2</span>; <span class="cm">// Dezső fut!</span>
+
+<span class="cm">// Tömb</span>
+<span class="ty">Kutya</span> <span class="fn">csapat</span>[<span class="nm">3</span>]; <span class="cm">// 3x Kristóf</span>
+      </div>
+      <div class="card-note">
+        <div class="note-lbl">💡 SORREND</div>
+        Születés: Pál ⟶ Kristóf. Halál: Dezső ⟶ felszabadítás.
+      </div>
+    </div>
+  </div>
+
+</div><!-- /cards-grid -->
+
+<!-- ══════════ WORKSHEET ══════════ -->
+<div class="worksheet-section">
+  <div class="sec-title">✏ FELADATOK</div>
+  <div class="sec-sub">// Bizonyítsd be, hogy internalizáltad a karaktereket</div>
+
+  <!-- 01 -->
+  <div class="exercise">
+    <div class="ex-header">
+      <div class="ex-num">01</div>
+      <div class="ex-title">Melyik karakter vagyok? — Kódrészlet → Fogalom párosítás</div>
+    </div>
+    <div class="ex-body">
+      <p class="ex-task">Minden kódrészlethez írd be a megfelelő fogalom nevét (és a karakter nevét ha emlékszel)!</p>
+      <table class="match-table">
+        <tr><th>Kódrészlet</th><th class="arr-col"></th><th>Fogalom / Karakter</th></tr>
+        <tr>
+          <td class="code-col"><code>class Kutya { ... };</code></td>
+          <td class="arr-col">→</td>
+          <td class="ans-col"></td>
+        </tr>
+        <tr>
+          <td class="code-col"><code>Kutya k("Rex");</code></td>
+          <td class="arr-col">→</td>
+          <td class="ans-col"></td>
+        </tr>
+        <tr>
+          <td class="code-col"><code>Kutya(string n) { nev=n; }</code></td>
+          <td class="arr-col">→</td>
+          <td class="ans-col"></td>
+        </tr>
+        <tr>
+          <td class="code-col"><code>~Kutya() { delete adat; }</code></td>
+          <td class="arr-col">→</td>
+          <td class="ans-col"></td>
+        </tr>
+        <tr>
+          <td class="code-col"><code>class Kutya : public Allat</code></td>
+          <td class="arr-col">→</td>
+          <td class="ans-col"></td>
+        </tr>
+        <tr>
+          <td class="code-col"><code>virtual void hangotAd() = 0;</code></td>
+          <td class="arr-col">→</td>
+          <td class="ans-col"></td>
+        </tr>
+        <tr>
+          <td class="code-col"><code>void f() override { ... }</code></td>
+          <td class="arr-col">→</td>
+          <td class="ans-col"></td>
+        </tr>
+        <tr>
+          <td class="code-col"><code>private: int egyenleg;</code></td>
+          <td class="arr-col">→</td>
+          <td class="ans-col"></td>
+        </tr>
+        <tr>
+          <td class="code-col"><code>Allat* a = new Kutya();<br>a-&gt;hangotAd(); // futáskor dől el</code></td>
+          <td class="arr-col">→</td>
+          <td class="ans-col"></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 02 -->
+  <div class="exercise">
+    <div class="ex-header">
+      <div class="ex-num">02</div>
+      <div class="ex-title">Töltsd ki a hiányzó részeket!</div>
+    </div>
+    <div class="ex-body">
+      <p class="ex-task"><strong>a)</strong> Konstruktor Kristóf és Destruktor Dezső — add hozzá őket az osztályhoz!</p>
+      <div class="ans-code">
+<span class="kw">class</span> <span class="ty">Auto</span> {
+<span class="kw">public</span>:
+    <span class="ty">std::string</span> marka;
+    <span class="kw">int</span>* <span class="fn">ev</span>;
+
+    <span class="cm">// konstruktor (inicializálja marka-t és foglalja le az ev-et heap-en):</span>
+    <span class="blank bl-lg"></span>(<span class="ty">std::string</span> m) {
+        marka = m;
+        ev = <span class="kw">new</span> <span class="kw">int</span>(<span class="nm">2024</span>);
+    }
+
+    <span class="cm">// destruktor (szabadítsa fel ev-et):</span>
+    <span class="blank bl-sm"></span><span class="fn">Auto</span>() {
+        <span class="kw">delete</span> <span class="blank bl-sm"></span>;
+    }
+};
+      </div>
+
+      <p class="ex-task"><strong>b)</strong> Bezáró Bence — javítsd ki a hozzáférési hibákat!</p>
+      <div class="ans-code">
+<span class="kw">class</span> <span class="ty">BankSzamla</span> {
+    <span class="kw">int</span> egyenleg = <span class="nm">0</span>;       <span class="cm">// Belülről látszik, kívülről nem → ________</span>
+    <span class="kw">int</span> hitelkeret = <span class="nm">50000</span>; <span class="cm">// Leszármazott is látja, kívülső nem → ______</span>
+    <span class="kw">void</span> <span class="fn">befizet</span>(<span class="kw">int</span> x);   <span class="cm">// Mindenki hívhatja → ________</span>
+};
+      </div>
+
+      <p class="ex-task"><strong>c)</strong> Polimorf Péter — mi a kimenet?</p>
+      <div class="ans-code">
+<span class="ty">Allat</span>* <span class="fn">allatok</span>[] = { <span class="kw">new</span> <span class="ty">Kutya</span>(), <span class="kw">new</span> <span class="ty">Macska</span>(), <span class="kw">new</span> <span class="ty">Kutya</span>() };
+<span class="kw">for</span> (<span class="kw">auto</span>* a : allatok) a-><span class="fn">hangotAd</span>();
+<span class="cm">// Kimenetek sorban: _______ , _______ , _______</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 03 -->
+  <div class="exercise">
+    <div class="ex-header">
+      <div class="ex-num">03</div>
+      <div class="ex-title">Absztrakt Anikó vs Interfész István — mi a különbség?</div>
+    </div>
+    <div class="ex-body">
+      <p class="ex-task">
+        Nézd meg a két osztályt. Melyik az <strong>absztrakt osztály</strong>, melyik az <strong>interfész</strong>?
+        Indokold egy mondatban, és jelöld meg, mi teszi azzá!
+      </p>
+      <div class="ans-code">
+<span class="cm">// X osztály:</span>
+<span class="kw">class</span> <span class="ty">X</span> {
+<span class="kw">public</span>:
+    <span class="kw">virtual</span> <span class="kw">void</span> <span class="fn">mozog</span>() = <span class="nm">0</span>;
+    <span class="kw">virtual</span> <span class="kw">void</span> <span class="fn">megall</span>() = <span class="nm">0</span>;
+    <span class="kw">virtual</span> ~<span class="fn">X</span>() = <span class="kw">default</span>;
+};
+
+<span class="cm">// Y osztály:</span>
+<span class="kw">class</span> <span class="ty">Y</span> {
+<span class="kw">public</span>:
+    <span class="kw">virtual</span> <span class="kw">void</span> <span class="fn">mozog</span>() = <span class="nm">0</span>;
+    <span class="kw">void</span> <span class="fn">legzik</span>() { <span class="cm">/* van impl. */</span> }
+    <span class="kw">int</span> energia = <span class="nm">100</span>;
+};
+      </div>
+      <p style="font-family:'Space Mono',monospace; font-size:12px; color:#888; margin-bottom:8px;">X = ______________ &nbsp;&nbsp; mert: _________________________________________________</p>
+      <p style="font-family:'Space Mono',monospace; font-size:12px; color:#888;">Y = ______________ &nbsp;&nbsp; mert: _________________________________________________</p>
+    </div>
+  </div>
+
+  <!-- 04 -->
+  <div class="exercise">
+    <div class="ex-header">
+      <div class="ex-num">04</div>
+      <div class="ex-title">Early Eddie vs Late Binding Lajos — mikor melyik?</div>
+    </div>
+    <div class="ex-body">
+      <p class="ex-task">
+        Minden sorhoz írd be: <strong>EARLY</strong> (fordítási idő) vagy <strong>LATE</strong> (futási idő)?
+      </p>
+      <table class="match-table">
+        <tr><th>Szituáció</th><th class="arr-col"></th><th>EARLY / LATE</th></tr>
+        <tr>
+          <td class="code-col"><code>Kutya k; k.ugat();</code> (ugat nem virtual)</td>
+          <td class="arr-col">→</td><td class="ans-col"></td>
+        </tr>
+        <tr>
+          <td class="code-col"><code>Allat* a = new Kutya(); a->hangotAd();</code> (virtual)</td>
+          <td class="arr-col">→</td><td class="ans-col"></td>
+        </tr>
+        <tr>
+          <td class="code-col"><code>osszeAdd&lt;int&gt;(3,4);</code> (template)</td>
+          <td class="arr-col">→</td><td class="ans-col"></td>
+        </tr>
+        <tr>
+          <td class="code-col">Függvény overloading (<code>f(int)</code> vs <code>f(double)</code>)</td>
+          <td class="arr-col">→</td><td class="ans-col"></td>
+        </tr>
+        <tr>
+          <td class="code-col"><code>virtual void f() = 0;</code> leszármazotton hívva</td>
+          <td class="arr-col">→</td><td class="ans-col"></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 05 -->
+  <div class="exercise">
+    <div class="ex-header">
+      <div class="ex-num">05</div>
+      <div class="ex-title">Tervezz egy mini osztályhierarchiát!</div>
+    </div>
+    <div class="ex-body">
+      <p class="ex-task">
+        Tervezz egy <strong>3 szintű öröklési hierarchiát</strong> a karakterek alapján!
+        (<em>pl. Jármű → Motoros jármű → Autó</em>)
+        Jelöld meg: melyik absztrakt, melyik konkrét, milyen metódusok virtual-ok,
+        és mi public / protected / private.
+      </p>
+      <div class="ans-line"></div>
+      <div class="ans-line"></div>
+      <div class="ans-line"></div>
+      <div class="ans-line"></div>
+      <div class="ans-line"></div>
+      <div class="ans-line"></div>
+      <div class="ans-line"></div>
+    </div>
+  </div>
+
+</div><!-- /worksheet -->
+
+<!-- FOOTER -->
+<div class="footer">
+  <div>
+    <div>C++ OOP BRAINROT WORKSHEET &nbsp;·&nbsp; Vol. 2</div>
+    <div style="margin-top:4px">// Válasz-kulcs: kérdezd meg a fordítódat</div>
+  </div>
+  <div class="score-box">
+    PONTSZÁM
+    <span>__ / 25</span>
+  </div>
+  <div style="text-align:right">
+    <div>12 karakter · 5 feladat</div>
+    <div style="margin-top:4px">Osztály, Objektum, Konstruktor,<br>Destruktor, Bezárás, Öröklés,<br>Polimorfizmus, Binding, Abstract, Interface</div>
+  </div>
+</div>
+
+</div><!-- /page -->
+</body>
+</html>

@@ -1,0 +1,219 @@
+OOP BRAINROT - MEGOLDÁSOK
+
+FELADAT 01: Melyik karakter vagyok?
+
+1. class Kutya { ... };
+   Osztály Olga - CLASS (Osztály)
+
+2. Kutya k("Rex");
+   Példányosító Pál - INSTANTIATION (Példányosítás)
+
+3. Kutya(string n) { nev=n; }
+   Konstruktor Kristóf - CONSTRUCTOR (Konstruktor)
+
+4. ~Kutya() { delete adat; }
+   Destruktor Dezső - DESTRUCTOR (Destruktor)
+
+5. class Kutya : public Allat
+   Öröklődő Olivér - INHERITANCE (Öröklés)
+
+6. virtual void hangotAd() = 0;
+   Absztrakt Anikó - ABSTRACT CLASS (Absztrakt osztály)
+
+7. void f() override { ... }
+   Polimorf Péter - POLYMORPHISM (Polimorfizmus)
+
+8. private: int egyenleg;
+   Bezáró Bence - ENCAPSULATION (Bezárás / Private)
+
+9. Allat* a = new Kutya(); a->hangotAd(); // futáskor dől el
+   Late Binding Lajos - LATE BINDING (Dinamikus szétküldés)
+
+
+FELADAT 02a: Konstruktor és Destruktor
+
+class Auto {
+public:
+    std::string marka;
+    int* ev;
+
+    Auto(std::string m) {
+        marka = m;
+        ev = new int(2024);
+    }
+
+    ~Auto() {
+        delete ev;
+    }
+};
+
+
+
+FELADAT 02b: Hozzáférési módosítók
+
+class BankSzamla {
+private:
+    int egyenleg = 0;
+
+protected:
+    int hitelkeret = 50000;
+
+public:
+    void befizet(int x);
+};
+
+
+
+FELADAT 02c: Polimorf Péter - kimenet
+
+Allat* allatok[] = { new Kutya(), new Macska(), new Kutya() };
+for (auto* a : allatok) a->hangotAd();
+
+Kimenetek sorban: Vau!, Miau!, Vau!
+
+(Polimorfizmus miatt futásidőben dől el, hogy melyik típus melyik hangot adja.)
+
+
+
+FELADAT 03: Absztrakt Anikó vs Interfész István
+
+X = Interfész, mert csak pure virtual metódusai vannak, nincs implementáció.
+
+Y = Absztrakt osztály, mert van implementált metódusa is (legzik()) és adattagja (energia), de nem lehet belőle direkt objektumot létrehozni.
+
+
+
+FELADAT 04: Early Eddie vs Late Binding Lajos
+
+1. Kutya k; k.ugat(); (ugat nem virtual)
+   EARLY - fordítási idő, a fordító tudja hogy Kutya::ugat()
+
+2. Allat* a = new Kutya(); a->hangotAd(); (virtual)
+   LATE - futási idő, a vtable pointer fut futásidőben
+
+3. osszeAdd<int>(3,4); (template)
+   EARLY - fordítási idő, template instantiation fordítási időben
+
+4. Függvény overloading (f(int) vs f(double))
+   EARLY - fordítási idő, a fordító kiválasztja az megfelelő verzió
+
+5. virtual void f() = 0; leszármazotton hívva
+   LATE - futási idő, virtual függvény, vtable alapján dönthető el
+
+
+
+FELADAT 05: Mini osztályhierarchia tervezés - 3 szintű öröklés
+
+OPCIÓ 1: Szállítás
+
+// 1. szint: Absztrakt alap
+class Szallitmany {
+protected:
+    std::string cel;
+    double tav;
+public:
+    Szallitmany(std::string c, double t) : cel(c), tav(t) {}
+    virtual ~Szallitmany() = default;
+    virtual void indulj() = 0;
+    virtual double szallitasiIdo() = 0;
+    void logolas() { }
+};
+
+// 2. szint: Köztes absztrakt osztály
+class Jarrmu : public Szallitmany {
+protected:
+    double sebesseg;
+public:
+    Jarrmu(std::string c, double t, double s) 
+        : Szallitmany(c, t), sebesseg(s) {}
+    
+    double szallitasiIdo() override {
+        return tav / sebesseg;
+    }
+    virtual void indulj() = 0;
+};
+
+// 3. szint: Konkrét osztály
+class Auto : public Jarrmu {
+public:
+    Auto(std::string c, double t, double s) 
+        : Jarrmu(c, t, s) {}
+    
+    void indulj() override {
+        std::cout << "Az autó elindul felé: " << cel << std::endl;
+    }
+};
+
+class Vonat : public Jarrmu {
+public:
+    Vonat(std::string c, double t, double s) 
+        : Jarrmu(c, t, s) {}
+    
+    void indulj() override {
+        std::cout << "A vonat begördül az állomásra: " << cel << std::endl;
+    }
+};
+
+
+OPCIÓ 2: Állat
+
+// 1. szint: Absztrakt alap
+class Allat {
+protected:
+    std::string nev;
+    int eletkor;
+public:
+    Allat(std::string n, int e) : nev(n), eletkor(e) {}
+    virtual ~Allat() = default;
+    virtual void hangotAd() = 0;
+    virtual void mozog() = 0;
+    void leleg() { }
+};
+
+// 2. szint: Köztes absztrakt
+class Emlossejt : public Allat {
+protected:
+    int testho;
+public:
+    Emlossejt(std::string n, int e, int th) 
+        : Allat(n, e), testho(th) {}
+    
+    void leleg() override { }
+    virtual void hangotAd() = 0;
+};
+
+// 3. szint: Konkrét
+class Kutya : public Emlossejt {
+public:
+    Kutya(std::string n, int e, int th) 
+        : Emlossejt(n, e, th) {}
+    
+    void hangotAd() override {
+        std::cout << "Vau!" << std::endl;
+    }
+    void mozog() override {
+        std::cout << "A kutya fut!" << std::endl;
+    }
+};
+
+class Denevér : public Emlossejt {
+public:
+    Denevér(std::string n, int e, int th) 
+        : Emlossejt(n, e, th) {}
+    
+    void hangotAd() override {
+        std::cout << "Tsík-tsík!" << std::endl;
+    }
+    void mozog() override {
+        std::cout << "A denevér repül!" << std::endl;
+    }
+};
+
+
+Fontosabb szabályok:
+- 1. szint absztrakt, csak interfész
+- 2. szint absztrakt, de van implementáció
+- 3. szint konkrét, minden felülírva
+- Protected adatok generációk között megosztva
+- Virtual destruktor szükséges
+
