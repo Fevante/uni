@@ -161,7 +161,6 @@ def main():
         binFa.kiir(f_out)
         f_out.write(f"depth = {binFa.getMelyseg()}\n")
         
-        # Format the mean and variance to match C++'s default stream output formatting
         mean_val = binFa.getAtlag()
         mean_str = f"{mean_val:g}"
         if "." not in mean_str and "e" not in mean_str.lower() and mean_val != int(mean_val):

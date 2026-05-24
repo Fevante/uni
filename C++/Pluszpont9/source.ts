@@ -139,7 +139,6 @@ function usage() {
 }
 
 function formatNumber(num: number): string {
-    // Format to 6 significant digits to match C++'s default output (%g)
     return parseFloat(num.toPrecision(6)).toString();
 }
 
