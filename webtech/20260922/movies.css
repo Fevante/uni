@@ -1,0 +1,105 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+
+movies {
+	border: indigo solid medium;
+	box-shadow: 0.25em 0.25em 0.5em indigo;
+	display: block;
+	font-family: "Roboto", sans-serif;
+	padding: 1em;
+	margin: 1em;
+}
+
+movie {
+	display: list-item;
+	list-style-type: disc;
+	margin: 1em;
+	padding: 0.5em 0;
+}
+
+movie:hover {
+	background-color: lightblue;
+}
+
+movie:hover::after {
+	content: "https://www.imdb.com/title/tt/" attr(id) " ";
+	background-color: gold;
+	color: blueviolet;
+	display: inline-block;
+	font-size: large;
+	margin-left: 1em;
+}
+
+title {
+	display: none;
+	visibility: hidden;
+}
+
+title:lang(en),
+year,
+genre,
+rating,
+votes {
+	display: inline-block;
+	visibility: visible;
+}
+
+title,
+year {
+	font-size: 1.2em;
+}
+
+year::before {
+	content: "(";
+}
+
+year::after {
+	content: ")";
+}
+
+genre {
+	background-color: blueviolet;
+	color: white;
+	border-radius: 5em;
+	margin-right: 0.25em;
+	padding: 0.25em 0.5em;
+	text-align: center;
+}
+
+rating {
+	color: white;
+	border-radius: 0.25em;
+	background-color: hotpink;
+	padding: 0.25em 0.25em;
+	font-weight: bold;
+}
+
+rating::after {
+	content: "/10";
+}
+
+votes:before {
+	content: "From: ";
+}
+
+votes:after {
+	content: " ratings";
+}
+
+movie[mpa-rating="R"] title,
+movie[mpa-rating="R"] year,
+movie[mpa-rating="NC-17"] title,
+movie[mpa-rating="NC-17"] year {
+	color: red;
+	font-weight: bold;
+}
+
+movie:hover::after {
+	border-radius: 0.25em;
+	padding: 0.25em;
+}
+
+movie:is([mpa-rating="R"], [mpa-rating="NC-17"]) > :is(title, year) {
+    content: "https://www.imdb.com/title/tt/" attr(id) " (Restricted)";
+    background-color: red;
+    color: white;
+}

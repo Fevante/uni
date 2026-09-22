@@ -1,0 +1,105 @@
+@import url("https://fonts.googleapis.com/css2?family=EB+Garamond");
+@import url("https://fonts.googleapis.com/css2?family=Anton");
+
+book,
+author,
+title,
+chapter,
+para {
+	display: block;
+}
+
+book {
+	background-color: #f8f8f8;
+	color: #222;
+	counter-reset: chapter-number footnote-number;
+	font-family:
+		"EB Garamond", Garamond, Georgia, "Times New Roman", Times, serif;
+	margin: auto;
+	max-width: 80ch;
+	padding: 2em;
+	counter-reset: chapter-number footnote-number;
+}
+
+author,
+title {
+	text-align: center;
+	font-family: Anton, sans-serif;
+}
+
+author {
+	font-size: 2em;
+}
+
+book > title {
+	font-size: 3em;
+	margin: 0.5em 0 1em 0;
+}
+
+author,
+book > title {
+	font-variant: small-caps;
+	letter-spacing: 0.1em;
+}
+
+book > title + chapter {
+	border-top: medium double black;
+}
+
+chapter > title {
+	font-size: x-large;
+	margin: 1.5em 0 0.75em 0;
+}
+
+chapter > title::before {
+	content: "Chapter " counter(chapter-number, upper-roman) "\2014";
+	counter-increment: chapter-number;
+}
+
+para {
+	line-height: 1.5;
+	margin: 0.75em 0;
+    text-indent: 1.5em;
+}
+
+title + para {
+    text-indent: 0;
+}
+
+title + para::first-letter {
+	font-size: 2em;
+	font-weight: bold;
+	line-height: 1;
+	margin-right: 0.05em;
+}
+
+para:hover {
+	background-color: #f0f0f0;
+	cursor: pointer;
+}
+
+footnote {
+	cursor: help;
+	display: inline;
+	font-size: 0;
+	vertical-align: super;
+}
+
+footnote::before {
+	content: "[" counter(footnote-number) "]";
+	counter-increment: footnote-number;
+	font-size: small;
+}
+
+footnote:hover {
+	background-color: purple;
+	color: white;
+	font-size: large;
+	padding: 0.5em;
+	vertical-align: baseline;
+}
+
+footnote::hover::before {
+	font-size: large;
+	padding-right: 0.25em;
+}

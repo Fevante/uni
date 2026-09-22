@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+album {
+    border: thin solid black;
+    border-radius: 0.5rem;
+    box-shadow: 0.25rem 0.25rem 0.5rem gray;
+    display: block;
+    font-family: "Segoe UI", Inter, Arial, sans-serif;
+    margin: 1rem auto;
+    padding: 1rem;
+    width: fit-content;
+}
+
+artist, album > title, year {
+    font-size: 1.5rem;
+    font-weight: bold;
+    display: inline-block;
+}
+
+artist::after {
+    content: " \2013 ";
+}
+
+year {
+    margin-left: 0.25rem;
+}
+
+year::before {
+    content: "(";
+}
+
+year::after {
+    content: ")";
+}
+
+tracks {
+    counter-reset: track-number;
+    display: table;
+    margin-top: 1.5rem;
+    width: 100%;
+}
+
+track {
+    display: table-row;
+    transition: background-color 0.4s, font-weight 0.4s;
+}
+
+track > title, track > length {
+    display: table-cell;
+    padding: 0.5rem;
+}
+
+track > title::before {
+    content: counter(track-number) ".";
+    counter-increment: track-number;
+    display: inline-block;
+    font-variant-numeric: tabular-nums;
+    margin-right: 0.75rem;
+    text-align: right;
+    width: 2rem;
+}
+
+track > length {
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+}
+
+track:nth-child(odd) {
+    background-color: whitesmoke;
+}
+
+track:nth-child(even) {
+    background-color: white;
+}
+
+track:hover {
+    background-color: gold;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+genres {
+    display: none;
+}

@@ -1,0 +1,12 @@
+<!ELEMENT movies (movie*)>
+<!ELEMENT movie (title+, year, genre+, rating, votes)>
+<!ATTLIST movie
+    id CDATA #REQUIRED
+    mpa-rating (G|NC-17|PG|PG-13|R) #IMPLIED>
+<!ELEMENT title (#PCDATA)>
+<!ATTLIST title
+    xml:lang NMTOKEN #REQUIRED>
+<!ELEMENT year (#PCDATA)>
+<!ELEMENT genre (#PCDATA)>
+<!ELEMENT rating (#PCDATA)>
+<!ELEMENT votes (#PCDATA)>

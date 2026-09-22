@@ -1,0 +1,3 @@
+valami* 0-végtelen
+valami+ 1-végtelen
+valami ??
